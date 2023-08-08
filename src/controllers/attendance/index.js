@@ -60,8 +60,8 @@ export const clockIn = async (req, res, next) => {
   try {
     const userId = req.user?.id;
 
-    const now = new Date();
-    // const now = new Date("2023-08-09 07:45:32");
+    // const now = new Date();
+    const now = new Date("2023-08-08 07:45:32");
 
     const todayStart = new Date(now);
     todayStart.setHours(0, 0, 0, 0);
@@ -97,35 +97,10 @@ export const clockIn = async (req, res, next) => {
 export const clockOut = async (req, res, next) => {
   const transaction = await db.sequelize.transaction();
 
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6;
-  };
-
-  const countWorkingDays = (year, month) => {
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    let workingDays = 0;
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const currentDate = new Date(year, month, day);
-
-      if (!isWeekend(currentDate)) {
-        workingDays++;
-      }
-    }
-
-    return workingDays;
-  };
-
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth();
-
-  console.log(countWorkingDays(year, month));
   try {
     const userId = req.user?.id;
-    const now = new Date();
-    // const now = new Date("2023-08-09 17:05:32");
+    // const now = new Date();
+    const now = new Date("2023-08-08 17:05:32");
 
     const todayStart = new Date(now);
     todayStart.setHours(0, 0, 0, 0);
@@ -147,27 +122,10 @@ export const clockOut = async (req, res, next) => {
     attendance.clockOut = now;
     await attendance.save();
 
-    const workedHours =
-      (now - attendance.clockIn - 1 * 1000 * 3600) / (1000 * 3600);
-
-    const salary = await Salary.findOne({ where: { userId } });
-
-    if (!salary) {
-      return res.status(400).json({ message: "Salary data not found." });
-    }
-
-    const hourlyRate = salary.baseSalary / countWorkingDays(year, month) / 8;
-    const totalSalary = hourlyRate * (workedHours > 8 ? 8 : workedHours);
-
-    salary.currentSalary += totalSalary;
-    await salary.save();
-
     await transaction.commit();
 
     return res.status(200).json({
       message: "Clock out successful. Salary calculated and updated.",
-      workedHours: +workedHours.toFixed(),
-      totalSalary: +totalSalary.toFixed(),
     });
   } catch (error) {
     await transaction.rollback();
