@@ -6,10 +6,9 @@ import * as middleware from "./src/middlewares/index.js";
 // @use router
 import AuthRouters from "./src/controllers/authentication/routers.js";
 import EmployeesManagement from "./src/controllers/employeesManagement/routers.js";
-// import Product from "./src/controllers/products/routers.js";
-// import Category from "./src/controllers/categories/routers.js";
-// import Order from "./src/controllers/orders/routers.js";
-// import Transaction from "./src/controllers/transaction/routers.js";
+import Attendance from "./src/controllers/attendance/routers.js";
+import Role from "./src/controllers/roles/routers.js";
+import Payroll from "./src/controllers/payroll/routers.js";
 // @sync database
 import db from "./src/models/index.js";
 
@@ -34,9 +33,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", AuthRouters);
 app.use("/api/v1", EmployeesManagement);
-// app.use("/api/v1", Product);
-// app.use("/api/v1", Category);
-// app.use("/api/v1", Order);
+app.use("/api/v1/attendance", Attendance);
+app.use("/api/v1/roles", Role);
+app.use("/api/v1/payroll", Payroll);
 // app.use("/api/v1", Transaction);
 
 //@global errorHandler

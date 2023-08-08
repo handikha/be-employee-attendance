@@ -40,7 +40,6 @@ export const login = async (req, res, next) => {
 
     // delete password before sending response
     delete userExists?.dataValues?.password;
-    delete userExists?.dataValues?.roleId;
 
     // send response
     res
@@ -58,18 +57,16 @@ export const login = async (req, res, next) => {
 
 export const keepLogin = async (req, res, next) => {
   try {
-    //@asume frontend send the request using header authorization
     const { id } = req.user;
     const user = await User?.findOne({
       where: { id },
       include: Roles,
     });
 
-    //@delete password before sending response
+    //delete password before sending response
     delete user?.dataValues?.password;
-    delete user?.dataValues?.roleId;
 
-    //@send response
+    //send response
     res.status(200).json({ user });
   } catch (error) {
     next(error);
@@ -180,8 +177,6 @@ export const forgotPassword = async (req, res, next) => {
       id: user.id,
       role: user.role,
     });
-
-    // await User?.update({ status: 0 }, { where: { id: user.id } });
 
     //@Send verification link to new email
     const template = fs.readFileSync(

@@ -17,6 +17,26 @@ router.post(
   uploader.fields([{ name: "data" }, { name: "file" }]),
   EmployeeManagementControllers.registerEmployee
 );
-router.get("/employees", verifyAdmin, EmployeeManagementControllers.getUsers);
+router.get(
+  "/employees",
+  verifyAdmin,
+  EmployeeManagementControllers.getEmployees
+);
+router.get(
+  "/employees/:id",
+  verifyAdmin,
+  EmployeeManagementControllers.getEmployees
+);
+router.patch(
+  "/employees/:id",
+  verifyAdmin,
+  uploader.fields([{ name: "data" }, { name: "file" }]),
+  EmployeeManagementControllers.updateEmployee
+);
+router.delete(
+  "/employees/:id",
+  verifyAdmin,
+  EmployeeManagementControllers.deleteEmployee
+);
 
 export default router;

@@ -1,5 +1,7 @@
+import Attendance from "./attendances.js";
 import db from "./index.js";
 import Role from "./roles.js";
+import Salary from "./salaries.js";
 
 //@define user models
 const User = db.sequelize.define("users", {
@@ -49,4 +51,7 @@ const User = db.sequelize.define("users", {
   },
 });
 User.belongsTo(Role, { foreignKey: "roleId" });
+User.hasOne(Salary, { foreignKey: "userId" });
+User.hasMany(Attendance, { foreignKey: "userId" });
+
 export default User;
