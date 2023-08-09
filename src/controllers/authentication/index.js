@@ -163,7 +163,7 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
-export const forgotPassword = async (req, res, next) => {
+export const forgetPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
     await Validation.EmailValidationSchema.validate(req.body);
